@@ -25,7 +25,8 @@ class ConfigTest(unittest.TestCase):
 """
     config = load_config(io.StringIO(config_yaml))
     self.assertEqual([g.name for g in config.groups], ["db", "web"])
-    self.assertEqual([s.hostname for s in config.groups[1].servers],
-                     ["webdev", "weblive"])
+    self.assertEqual(
+        [(s.hostname, s.username) for s in config.groups[1].servers],
+        [("webdev", "root"), ("weblive", "root")])
     self.assertEqual(config.groups[1].servers[0].excludes, {"missing"})
     self.assertEqual(config.groups[1].servers[1].excludes, set())
