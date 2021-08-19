@@ -7,16 +7,11 @@ except ImportError:
   from yaml import Loader, Dumper
 
 
-class Exclude(object):
-  def __init__(self, name):
-    self.name = name
-
-
 class Server(object):
   def __init__(self, raw):
     self.hostname = raw["hostname"]
     self.username = raw.get("username", None)
-    self.excludes = {Exclude(e) for e in raw.get("excludes", [])}
+    self.excludes = {e for e in raw.get("excludes", set())}
 
 
 class Group(object):
@@ -32,8 +27,11 @@ class Config(object):
     self.groups = [Group(name, groups_dict[name]) for name in groups_dict]
 
 
-def load_config(filename):
-  logging.info(f"Opening config {filename}...")
-  with open(filename, 'rb') as stream:
+def load_config(input):
+  if isinstance(input, str):
+    logging.info(f"Opening config {input}...")
+    input = open(input, 'rb')
+
+  with input as stream:
     data = load(stream, Loader=Loader)
     return Config(data)
