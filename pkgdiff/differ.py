@@ -1,3 +1,16 @@
+def _filter_diff(diffAB, aExcludes, bExcludes, includeEqual):
+  filtered = {}
+  for packageName, result in diffAB.items():
+    excluded = packageName in aExcludes \
+               or packageName in bExcludes \
+               or result[0] in aExcludes \
+               or result[1] in bExcludes
+    if not excluded and (result[0] != result[1] or includeEqual):
+      filtered[packageName] = result
+
+  return filtered
+
+
 def create_diff(listA, listB, *, aExcludes=None, bExcludes=None,
     includeEqual=False):
   aExcludes = aExcludes or []
@@ -17,11 +30,4 @@ def create_diff(listA, listB, *, aExcludes=None, bExcludes=None,
       packageB = mapB[packageName]
       diffAB[packageName] = ["missing", packageB.version]
 
-  filtered = {}
-  for packageName, result in diffAB.items():
-    excluded = packageName in aExcludes or packageName in bExcludes or result[
-      0] in aExcludes or result[1] in bExcludes
-    if not excluded and (result[0] != result[1] or includeEqual):
-      filtered[packageName] = result
-
-  return filtered
+  return _filter_diff(diffAB, aExcludes, bExcludes, includeEqual)

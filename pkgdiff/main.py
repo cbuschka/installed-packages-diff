@@ -6,16 +6,30 @@ from .differ import create_diff
 import logging
 
 
+def print_diff(serverA, serverB, pkgDiff):
+  print(f"\n= {serverA.hostname} {serverB.hostname} =")
+  for packageName in pkgDiff:
+    result = pkgDiff[packageName]
+    if result[0] == "missing":
+      action = "A"
+    elif result[1] == "missing":
+      action = "B"
+    elif result[0] != result[1]:
+      action = "U"
+    else:
+      action = " "
+
+    print(f"{action} {packageName:40s} {result[0]:40s} {result[1]:40s}")
+
+
 def diff_server(serverA, serverB):
   pkgFetcher = PackageFetcher()
   devPkgs = pkgFetcher.get_packages(serverA.hostname, username=serverA.username)
   prodPkgs = pkgFetcher.get_packages(serverB.hostname,
                                      username=serverB.username)
-  pkgDiff = create_diff(devPkgs, prodPkgs)
-  for packageName, result in pkgDiff.items():
-    if result[0] != result[1]:
-      print(f"{packageName} {result[0]} {result[1]}")
-
+  pkgDiff = create_diff(devPkgs, prodPkgs, aExcludes=serverA.excludes,
+                        bExcludes=serverB.excludes, includeEqual=False)
+  print_diff(serverA, serverB, pkgDiff)
 
 
 def main():

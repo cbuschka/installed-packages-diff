@@ -11,7 +11,7 @@ class Server(object):
   def __init__(self, raw):
     self.hostname = raw["hostname"]
     self.username = raw.get("username", None)
-    self.excludes = {e for e in raw.get("excludes", set())}
+    self.excludes = {e for e in raw.get("excludes", [])}
 
 
 class Group(object):
