@@ -12,19 +12,10 @@ def diff_server(serverA, serverB):
   prodPkgs = pkgFetcher.get_packages(serverB.hostname,
                                      username=serverB.username)
   pkgDiff = create_diff(devPkgs, prodPkgs)
-  print(f"\n= {serverA.hostname} {serverB.hostname} =")
-  for packageName in pkgDiff:
-    result = pkgDiff[packageName]
-    if result[0] == "missing":
-      action = "A"
-    elif result[1] == "missing":
-      action = "B"
-    elif result[0] != result[1]:
-      action = "U"
-    else:
-      action = " "
+  for packageName, result in pkgDiff.items():
+    if result[0] != result[1]:
+      print(f"{packageName} {result[0]} {result[1]}")
 
-    print(f"{action} {packageName:40s} {result[0]:40s} {result[1]:40s}")
 
 
 def main():

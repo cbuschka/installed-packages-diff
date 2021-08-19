@@ -20,7 +20,7 @@ class Package(object):
     return f"Package(name={self.name},version={self.version})"
 
   def __hash__(self):
-    return hash(tuple(sorted(self.__dict__.items())))
+    return hash((self.name, self.version))
 
   def __eq__(self, other):
-    return repr(self) == repr(other)
+    return (self.name, self.version) == (other.name, other.version)
