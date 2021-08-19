@@ -1,0 +1,17 @@
+groups:
+  db:
+    servers:
+      - username: root
+        hostname: dbdev
+        excludes:
+          - "missing"
+      - username: root
+        hostname: dblive
+  web:
+    servers:
+      - username: root
+        hostname: webdev
+        excludes:
+          - "missing"
+      - username: root
+        hostname: weblive

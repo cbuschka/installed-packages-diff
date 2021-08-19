@@ -1,0 +1,4 @@
+config*.y?ml
+*~
+*.pyc
+__pycache__/
