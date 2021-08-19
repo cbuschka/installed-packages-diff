@@ -2,7 +2,7 @@ TOP_DIR := $(dir $(abspath $(lastword $(MAKEFILE_LIST))))
 SHELL := /bin/bash
 
 init:
-	@if [ ! pipenv --version 1>/dev/null 2>&1 ]; then \
+	@if [ -z "$(shell pipenv --version 1>/dev/null 2>&1)" ]; then \
 		pip install --user pipenv; \
 	else \
 		echo "pipenv is available, good."; \
