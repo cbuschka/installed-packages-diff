@@ -1,4 +1,4 @@
-# pkgdiff -compare packages and versions on server pairs
+# pkgdiff - Compare packages and versions on servers
 
 ## Prerequisites
 
