@@ -1,4 +1,4 @@
-# pkgdiff - Compare packages and versions on servers
+# installed-packages-diff - Compare packages and versions on servers
 
 ## Prerequisites
 
@@ -34,7 +34,7 @@ groups:
         hostname: web-live
 ```
 
-### Run pkgdiff
+### Run installed-packages-diff
 
 ```bash
 make run

@@ -14,9 +14,9 @@ def diff_server(serverA, serverB):
   prodPkgs = pkgFetcher.get_packages(serverB.hostname,
                                      username=serverB.username,
                                      type=serverB.type)
-  pkgDiff = create_diff(devPkgs, prodPkgs, aExcludes=serverA.excludes,
+  installed_packages_diff = create_diff(devPkgs, prodPkgs, aExcludes=serverA.excludes,
                         bExcludes=serverB.excludes, includeEqual=False)
-  print_diff(serverA.hostname, serverB.hostname, pkgDiff)
+  print_diff(serverA.hostname, serverB.hostname, installed_packages_diff)
 
 
 def main():

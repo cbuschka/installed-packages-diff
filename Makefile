@@ -18,5 +18,5 @@ tests:	init
 	pipenv run python3 -B -m unittest discover -s ${TOP_DIR}/tests/ -p '*_test.py'
 
 run:	init
-	@echo "Running pkgdiff..."; \
-	pipenv run python3 -B -m pkgdiff ${TOP_DIR}/config.yaml
+	@echo "Running installed_packages_diff..."; \
+	pipenv run python3 -B -m installed_packages_diff ${TOP_DIR}/config.yaml

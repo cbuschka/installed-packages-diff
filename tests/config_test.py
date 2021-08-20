@@ -1,6 +1,6 @@
 import io
 import unittest
-from pkgdiff.config import load_config
+from installed_packages_diff.config import load_config
 
 
 class ConfigTest(unittest.TestCase):

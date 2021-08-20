@@ -1,7 +1,7 @@
-def print_diff(serverA, serverB, pkgDiff, *, file=None):
+def print_diff(serverA, serverB, installed_packages_diff, *, file=None):
   print(f"\n= {serverA} {serverB} =", file=file)
-  for packageName in pkgDiff:
-    result = pkgDiff[packageName]
+  for packageName in installed_packages_diff:
+    result = installed_packages_diff[packageName]
     if result[0] == "missing":
       action = "A"
     elif result[1] == "missing":

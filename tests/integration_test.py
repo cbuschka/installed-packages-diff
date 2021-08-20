@@ -1,9 +1,9 @@
 import io
 import unittest
 
-from pkgdiff.differ import create_diff
-from pkgdiff.package import Package
-from pkgdiff.printing import print_diff
+from installed_packages_diff.differ import create_diff
+from installed_packages_diff.package import Package
+from installed_packages_diff.printing import print_diff
 
 input1 = """aaa_base-11-6.115.1
 acl-2.2.47-30.36.1
@@ -1660,9 +1660,9 @@ class IntegerationTest(unittest.TestCase):
   def test_all(self):
     aPackages = [Package.parse(line) for line in input1.splitlines()]
     bPackages = [Package.parse(line) for line in input2.splitlines()]
-    pkgDiff = create_diff(aPackages, bPackages, includeEqual=False)
+    installed_packages_diff = create_diff(aPackages, bPackages, includeEqual=False)
     with io.StringIO() as buf:
-      print_diff("serverA", "serverB", pkgDiff, file=buf)
+      print_diff("serverA", "serverB", installed_packages_diff, file=buf)
       self.assertEqual("""= serverA serverB =
 U curl                                     7.37.0-70.66.1                           7.37.0-70.47.1                          
 U kernel-default                           3.0.101-108.129.1                        3.0.101-108.126.1                       

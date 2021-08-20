@@ -1,6 +1,6 @@
 import unittest
-from pkgdiff.package import Package
-from pkgdiff.differ import create_diff
+from installed_packages_diff.package import Package
+from installed_packages_diff.differ import create_diff
 
 
 class DifferTest(unittest.TestCase):
