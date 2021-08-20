@@ -9,9 +9,11 @@ import logging
 
 def diff_server(serverA, serverB):
   pkgFetcher = PackageFetcher()
-  devPkgs = pkgFetcher.get_packages(serverA.hostname, username=serverA.username)
+  devPkgs = pkgFetcher.get_packages(serverA.hostname, username=serverA.username,
+                                    type=serverA.type)
   prodPkgs = pkgFetcher.get_packages(serverB.hostname,
-                                     username=serverB.username)
+                                     username=serverB.username,
+                                     type=serverB.type)
   pkgDiff = create_diff(devPkgs, prodPkgs, aExcludes=serverA.excludes,
                         bExcludes=serverB.excludes, includeEqual=False)
   print_diff(serverA.hostname, serverB.hostname, pkgDiff)

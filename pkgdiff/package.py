@@ -2,11 +2,14 @@ import re
 
 
 class Package(object):
-  PKG_NAME_REGEX = re.compile("^\s*(.*)-([^\-\s]+-[^\-\s]+)\s*$")
+  PKG_NAME_REGEX = {
+    "rpm": re.compile("^\s*(.+)-([^\-\s]+-[^\-\s]+)\s*$"),
+    "dpkg": re.compile("^\s*(.+)\t([^\s]+)\s*$")
+  }
 
   @classmethod
-  def parse(cls, pkg_name: str):
-    result = Package.PKG_NAME_REGEX.fullmatch(pkg_name)
+  def parse(cls, pkg_name: str, type="rpm"):
+    result = Package.PKG_NAME_REGEX[type].fullmatch(pkg_name)
     if not result:
       raise ValueError(f"Invalid package name '{pkg_name}'.")
 

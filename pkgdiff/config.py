@@ -8,16 +8,19 @@ except ImportError:
 
 
 class Server(object):
-  def __init__(self, raw):
+  def __init__(self, raw, *, type_from_group=None):
     self.hostname = raw["hostname"]
     self.username = raw.get("username", None)
     self.excludes = {e for e in raw.get("excludes", [])}
+    self.type = raw.get("type", type_from_group)
 
 
 class Group(object):
   def __init__(self, name, raw):
     self.name = name
-    self.servers = [Server(server) for server in raw["servers"]]
+    type = raw.get("type", "rpm")
+    self.servers = [Server(server, type_from_group=type) for server in
+                    raw["servers"]]
 
 
 class Config(object):

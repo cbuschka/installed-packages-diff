@@ -6,14 +6,19 @@ from .package import Package
 
 
 class PackageFetcher(object):
-  def get_packages(self, hostname, *, username=None):
+  LIST_PACKAGES_COMMAND = {
+    "rpm": "rpm -qa",
+    "dpkg": "dpkg-query --show --showformat='${binary:Package}\\t${Version}\\n'"
+  }
+
+  def get_packages(self, hostname, *, username=None, type="rpm"):
     logging.info(f"Fetching package from {username}@{hostname}...")
     with paramiko.SSHClient() as client:
       client.set_missing_host_key_policy(paramiko.AutoAddPolicy())
       client.connect(hostname, username=username)
       session = client.get_transport().open_session()
       paramiko.agent.AgentRequestHandler(session)
-      session.exec_command("rpm -qa")
+      session.exec_command(PackageFetcher.LIST_PACKAGES_COMMAND[type])
       stdin = session.makefile_stdin("wb", -1)
       stdin.close()
       stdout = session.makefile("r", -1)
@@ -25,4 +30,4 @@ class PackageFetcher(object):
         print(err_lines)
         raise ValueError(
             f"Querying packages from {hostname} failed with exit status {exit_status}")
-      return [Package.parse(line) for line in out_lines]
+      return [Package.parse(line.strip(), type=type) for line in out_lines]

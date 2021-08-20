@@ -3,7 +3,7 @@ SHELL := /bin/bash
 
 init:
 	@if [ -z "$(shell pipenv --version 1>/dev/null 2>&1)" ]; then \
-		pip install --user pipenv; \
+		pip install pipenv; \
 	else \
 		echo "pipenv is available, good."; \
 	fi
