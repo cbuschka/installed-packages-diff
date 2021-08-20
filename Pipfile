@@ -4,10 +4,11 @@ verify_ssl = true
 name = "pypi"
 
 [packages]
-paramiko = "*"
-pyyaml = "*"
+# from requirements.txt
 
 [dev-packages]
+paramiko = ">=2.7.2"
+PyYAML = ">=5.4.1"
 
 [requires]
 python_version = "3"
