@@ -1,12 +1,28 @@
 # installed-packages-diff - Compare packages and versions on servers
 
+## Features
+
+* collects packages and version via ssh
+* calculated and prints the differences
+* supports rpm and dpkg
+
 ## Prerequisites
 
 * GNU make
-* python >= 3.9
+* python >= 3.6
 * pipenv
 
 ## Usage
+
+Create a config as described below.
+
+```bash
+pip install --user installed-packages-diff
+
+python3 -m installed_packages_diff ./config.yaml
+```
+
+## Development
 
 ### Setup
 
@@ -25,6 +41,7 @@ make tests
 ```yaml
 groups:
   web:
+    type: rpm # or dpkg
     servers:
       - username: root
         hostname: web-dev
