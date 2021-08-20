@@ -10,7 +10,7 @@ init:
 
 install_deps:	init
 	@echo "Installing deps..."; \
-	pipenv install --dev
+	pipenv install --dev -r requirements.txt -r requirements.txt
 
 
 tests:	init
@@ -20,3 +20,14 @@ tests:	init
 run:	init
 	@echo "Running installed_packages_diff..."; \
 	pipenv run python3 -B -m installed_packages_diff ${TOP_DIR}/config.yaml
+
+dist:   clean install_deps tests
+	@echo "Bulding dist..."; \
+	pipenv run python3 ${TOP_DIR}/setup.py sdist bdist_wheel
+
+clean:
+	rm -rf dist/ *.egg-info/
+
+upload: dist
+	@echo "Uploading dist..."; \
+	pipenv run twine upload dist/*
