@@ -1,3 +1,4 @@
+[![Build](https://img.shields.io/github/workflow/status/cbuschka/installed-packages-diff/build)](https://github.io/cbuschka/installed-packages-diff) [![PyPI](https://img.shields.io/pypi/v/installed-packages-diff)](https://pypi.org/project/installed-packages-diff/) [![License](https://img.shields.io/badge/License-MIT-lightgrey.svg)](https://github.com/cbuschka/installed-packages-diff/blob/main/license.txt)
 # installed-packages-diff - Compare packages and versions on servers
 
 ## Features
