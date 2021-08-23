@@ -1663,20 +1663,26 @@ class IntegerationTest(unittest.TestCase):
     installed_packages_diff = create_diff(aPackages, bPackages, includeEqual=False)
     with io.StringIO() as buf:
       print_diff("serverA", "serverB", installed_packages_diff, file=buf)
-      self.assertEqual("""= serverA serverB =
-U curl                                     7.37.0-70.66.1                           7.37.0-70.47.1                          
-U kernel-default                           3.0.101-108.129.1                        3.0.101-108.126.1                       
-U kernel-default-base                      3.0.101-108.129.1                        3.0.101-108.126.1                       
-U kernel-default-devel                     3.0.101-108.129.1                        3.0.101-108.126.1                       
-U kernel-source                            3.0.101-108.129.1                        3.0.101-108.126.1                       
-U libcurl4                                 7.37.0-70.66.1                           7.37.0-70.47.1                          
-U libsqlite3-0                             3.7.6.3-1.4.7.15.1                       3.7.6.3-1.4.7.12.1                      
-U libudev0                                 147-0.111.5.1                            147-0.110.1                             
-U microcode_ctl                            1.17-102.83.71.1                         1.17-102.83.68.1                        
-U og-update-info                           1-202108                                 1-202107                                
-U sqlite3                                  3.7.6.3-1.4.7.15.1                       3.7.6.3-1.4.7.12.1                      
-U udev                                     147-0.111.5.1                            147-0.110.1                             
-A jdk                                      missing                                  1.7.0_67-fcs                            
-A libstdc++47-devel-32bit                  missing                                  4.7.2_20130108-0.19.3                   
-A libstdc++47-devel                        missing                                  4.7.2_20130108-0.19.3""",
-                       buf.getvalue().strip())
+      self.assertEqual([l.strip() for l in """
+= serverA serverB =
+curl                                     7.37.0-70.66.1                           7.37.0-70.47.1
+gpg-pubkey                               257a4686-60101325                        missing
+kernel-default                           3.0.101-108.129.1                        missing
+kernel-default                           missing                                  3.0.101-107.1
+kernel-default-base                      3.0.101-108.129.1                        missing
+kernel-default-base                      missing                                  3.0.101-107.1
+kernel-default-devel                     3.0.101-108.129.1                        missing
+kernel-default-devel                     missing                                  3.0.101-107.1
+kernel-source                            3.0.101-108.129.1                        missing
+kernel-source                            missing                                  3.0.101-107.1
+libcurl4                                 7.37.0-70.66.1                           7.37.0-70.47.1
+libsqlite3-0                             3.7.6.3-1.4.7.15.1                       3.7.6.3-1.4.7.12.1
+libudev0                                 147-0.111.5.1                            147-0.110.1
+microcode_ctl                            1.17-102.83.71.1                         1.17-102.83.68.1
+og-update-info                           1-202108                                 1-202107
+sqlite3                                  3.7.6.3-1.4.7.15.1                       3.7.6.3-1.4.7.12.1
+udev                                     147-0.111.5.1                            147-0.110.1
+jdk                                      missing                                  1.7.0_67-fcs
+libstdc++47-devel-32bit                  missing                                  4.7.2_20130108-0.19.3
+libstdc++47-devel                        missing                                  4.7.2_20130108-0.19.3""".splitlines()],
+                       [l.strip() for l in buf.getvalue().splitlines()])
