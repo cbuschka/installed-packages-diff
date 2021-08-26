@@ -26,7 +26,7 @@ dist:   clean install_deps tests
 	pipenv run python3 ${TOP_DIR}/setup.py sdist bdist_wheel
 
 clean:
-	rm -rf dist/ *.egg-info/
+	rm -rf ${TOP_DIR}/dist/ ${TOP_DIR}/build/ *.egg-info/
 
 upload: dist
 	@echo "Uploading dist..."; \
