@@ -1,4 +1,4 @@
-version: 'installed-packages-diff-1'
+version: 'installed-packages-diff/2'
 groups:
   db:
     type: rpm

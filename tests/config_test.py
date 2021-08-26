@@ -16,16 +16,16 @@ class ConfigTest(unittest.TestCase):
     config_yaml = """version: 'invalid'"""
     with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
       load_config(io.StringIO(config_yaml))
-    self.assertEqual("'invalid' is not one of ['installed-packages-diff-1']",
+    self.assertEqual("'invalid' is not one of ['installed-packages-diff/2']",
                      ex_ctx.exception.message)
 
   def test_minimal_config(self):
-    config_yaml = """version: 'installed-packages-diff-1'"""
+    config_yaml = """version: 'installed-packages-diff/2'"""
     config = load_config(io.StringIO(config_yaml))
     self.assertEqual(0, len(config.groups))
 
   def test_missing_username(self):
-    config_yaml = """version: 'installed-packages-diff-1'
+    config_yaml = """version: 'installed-packages-diff/2'
 groups:
   db:
     servers:
@@ -38,7 +38,7 @@ groups:
                      ex_ctx.exception.message)
 
   def test_valid_group_type(self):
-    config_yaml = """version: 'installed-packages-diff-1'
+    config_yaml = """version: 'installed-packages-diff/2'
 groups:
   group:
     type: rpm
@@ -55,7 +55,7 @@ groups:
     self.assertEqual("dpkg", config.groups[0].servers[1].type)
 
   def test_single_server(self):
-    config_yaml = """version: 'installed-packages-diff-1'
+    config_yaml = """version: 'installed-packages-diff/2'
 groups:
   group:
     servers:
@@ -68,7 +68,7 @@ groups:
                      ex_ctx.exception.message)
 
   def test_missing_hostname(self):
-    config_yaml = """version: 'installed-packages-diff-1'
+    config_yaml = """version: 'installed-packages-diff/2'
 groups:
   db:
     servers:
@@ -81,7 +81,7 @@ groups:
                      ex_ctx.exception.message)
 
   def test_full(self):
-    config_yaml = """version: 'installed-packages-diff-1'
+    config_yaml = """version: 'installed-packages-diff/2'
 groups:
   db:
     servers:

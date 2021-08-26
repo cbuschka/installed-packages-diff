@@ -17,7 +17,7 @@ CONFIG_SCHEMA = {
     "version": {
       "type": "string",
       "enum": [
-        "installed-packages-diff-1"
+        "installed-packages-diff/2"
       ]
     },
     "groups": {
