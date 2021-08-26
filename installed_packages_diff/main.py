@@ -29,7 +29,7 @@ def _parse_args():
                         default="./config.yaml")
   opt_parser.add_option("-v", "--verbose", dest="verbose",
                         help="Increase output", metavar="VERBOSE",
-                        default=True)
+                        default=False)
 
   options, args = opt_parser.parse_args()
   option_vars = vars(options)
