@@ -1,5 +1,7 @@
+version: 'installed-packages-diff-1'
 groups:
   db:
+    type: rpm
     servers:
       - username: root
         hostname: dbdev

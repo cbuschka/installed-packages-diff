@@ -40,6 +40,7 @@ make tests
 ### Create a config config.yml
 
 ```yaml
+version: 'installed-packages-diff-1'
 groups:
   web:
     type: rpm # or dpkg

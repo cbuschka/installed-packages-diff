@@ -37,6 +37,23 @@ groups:
     self.assertEqual("'username' is a required property",
                      ex_ctx.exception.message)
 
+  def test_valid_group_type(self):
+    config_yaml = """version: 'installed-packages-diff-1'
+groups:
+  group:
+    type: rpm
+    servers:
+      - hostname: host
+        username: root
+      - hostname: host
+        username: root
+        type: dpkg
+"""
+    config = load_config(io.StringIO(config_yaml))
+    self.assertEqual("rpm", config.groups[0].type)
+    self.assertEqual("rpm", config.groups[0].servers[0].type)
+    self.assertEqual("dpkg", config.groups[0].servers[1].type)
+
   def test_single_server(self):
     config_yaml = """version: 'installed-packages-diff-1'
 groups:

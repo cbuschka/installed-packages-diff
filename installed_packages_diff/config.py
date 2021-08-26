@@ -37,6 +37,9 @@ CONFIG_SCHEMA = {
       "id": "#/definitions/group",
       "type": "object",
       "properties": {
+        "type": {
+          "$ref": "#/definitions/pkg-type"
+        },
         "servers": {
           "type": "array",
           "minItems": 2,
@@ -44,12 +47,16 @@ CONFIG_SCHEMA = {
             "$ref": "#/definitions/server"
           }
         }
-      }
+      },
+      "additionalProperties": False
     },
     "server": {
       "id": "#/definitions/server",
       "type": "object",
       "properties": {
+        "type": {
+          "$ref": "#/definitions/pkg-type"
+        },
         "username": {"type": "string"},
         "hostname": {"type": "string"},
         "excludes": {"type": "array",
@@ -57,7 +64,13 @@ CONFIG_SCHEMA = {
                        "type": "string"
                      }},
       },
+      "additionalProperties": False,
       "required": ["hostname", "username"]
+    },
+    "pkg-type": {
+      "id": "#/definitions/pkg-type",
+      "type": "string",
+      "enum": ["dpkg", "rpm"]
     }
   }
 }
@@ -74,8 +87,8 @@ class Server(object):
 class Group(object):
   def __init__(self, name, raw):
     self.name = name
-    type = raw.get("type", "rpm")
-    self.servers = [Server(server, type_from_group=type) for server in
+    self.type = raw.get("type", "rpm")
+    self.servers = [Server(server, type_from_group=self.type) for server in
                     raw["servers"]]
 
 
