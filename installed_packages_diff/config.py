@@ -1,10 +1,66 @@
-from yaml import load
 import logging
+
+from yaml import load
+import jsonschema
 
 try:
   from yaml import CLoader as Loader, CDumper as Dumper
 except ImportError:
   from yaml import Loader, Dumper
+
+CONFIG_SCHEMA = {
+  "$schema": "http://json-schema.org/draft-04/schema#",
+  "id": "config-0.json",
+  "type": "object",
+  "required": ["version"],
+  "properties": {
+    "version": {
+      "type": "string",
+      "enum": [
+        "installed-packages-diff-1"
+      ]
+    },
+    "groups": {
+      "id": "#/properties/groups",
+      "type": "object",
+      "patternProperties": {
+        "^[a-zA-Z0-9._-]+$": {
+          "$ref": "#/definitions/group"
+        }
+      },
+      "additionalProperties": False
+    }
+  },
+  "additionalProperties": False,
+  "definitions": {
+    "group": {
+      "id": "#/definitions/group",
+      "type": "object",
+      "properties": {
+        "servers": {
+          "type": "array",
+          "minItems": 2,
+          "items": {
+            "$ref": "#/definitions/server"
+          }
+        }
+      }
+    },
+    "server": {
+      "id": "#/definitions/server",
+      "type": "object",
+      "properties": {
+        "username": {"type": "string"},
+        "hostname": {"type": "string"},
+        "excludes": {"type": "array",
+                     "items": {
+                       "type": "string"
+                     }},
+      },
+      "required": ["hostname", "username"]
+    }
+  }
+}
 
 
 class Server(object):
@@ -37,4 +93,5 @@ def load_config(input):
 
   with input as stream:
     data = load(stream, Loader=Loader)
+    jsonschema.validate(data, schema=CONFIG_SCHEMA)
     return Config(data)

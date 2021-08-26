@@ -1,11 +1,71 @@
 import io
 import unittest
+import jsonschema
 from installed_packages_diff.config import load_config
 
 
 class ConfigTest(unittest.TestCase):
+  def test_missing_version(self):
+    config_yaml = """groups:"""
+    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
+      load_config(io.StringIO(config_yaml))
+    self.assertEqual("'version' is a required property",
+                     ex_ctx.exception.message)
+
+  def test_invalid_version(self):
+    config_yaml = """version: 'invalid'"""
+    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
+      load_config(io.StringIO(config_yaml))
+    self.assertEqual("'invalid' is not one of ['installed-packages-diff-1']",
+                     ex_ctx.exception.message)
+
+  def test_minimal_config(self):
+    config_yaml = """version: 'installed-packages-diff-1'"""
+    config = load_config(io.StringIO(config_yaml))
+    self.assertEqual(0, len(config.groups))
+
+  def test_missing_username(self):
+    config_yaml = """version: 'installed-packages-diff-1'
+groups:
+  db:
+    servers:
+      - hostname: dbdev
+      - hostname: dbdev
+"""
+    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
+      load_config(io.StringIO(config_yaml))
+    self.assertEqual("'username' is a required property",
+                     ex_ctx.exception.message)
+
+  def test_single_server(self):
+    config_yaml = """version: 'installed-packages-diff-1'
+groups:
+  group:
+    servers:
+      - hostname: host
+        username: root
+"""
+    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
+      load_config(io.StringIO(config_yaml))
+    self.assertEqual("[{'hostname': 'host', 'username': 'root'}] is too short",
+                     ex_ctx.exception.message)
+
+  def test_missing_hostname(self):
+    config_yaml = """version: 'installed-packages-diff-1'
+groups:
+  db:
+    servers:
+      - username: root
+      - username: root
+"""
+    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
+      load_config(io.StringIO(config_yaml))
+    self.assertEqual("'hostname' is a required property",
+                     ex_ctx.exception.message)
+
   def test_full(self):
-    config_yaml = """groups:
+    config_yaml = """version: 'installed-packages-diff-1'
+groups:
   db:
     servers:
       - username: root
@@ -26,7 +86,7 @@ class ConfigTest(unittest.TestCase):
     config = load_config(io.StringIO(config_yaml))
     self.assertEqual([g.name for g in config.groups], ["db", "web"])
     self.assertEqual(
-        [(s.hostname, s.username) for s in config.groups[1].servers],
-        [("webdev", "root"), ("weblive", "root")])
+      [(s.hostname, s.username) for s in config.groups[1].servers],
+      [("webdev", "root"), ("weblive", "root")])
     self.assertEqual(config.groups[1].servers[0].excludes, {"missing"})
     self.assertEqual(config.groups[1].servers[1].excludes, set())
