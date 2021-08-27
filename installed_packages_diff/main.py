@@ -47,7 +47,6 @@ def main():
 
   config = load_config(option_vars.get("config_file"))
   for group in config.groups:
-    serverA = group.servers[0]
-    serverB = group.servers[1]
-
-    diff_server(serverA, serverB)
+    baselineServer = group.servers[0]
+    for otherServer in group.servers[1:]:
+      diff_server(baselineServer, otherServer)
