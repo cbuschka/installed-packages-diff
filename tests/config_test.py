@@ -82,6 +82,34 @@ groups:
     self.assertEqual("'hostname' is a required property",
                      ex_ctx.exception.message)
 
+  def test_expand_username(self):
+    config_yaml = """version: 'installed-packages-diff/2'
+groups:
+  db:
+    servers:
+      - username: ${USER}
+        hostname: host1
+      - username: ${USER}
+        hostname: host2
+"""
+    config = load_config(io.StringIO(config_yaml))
+    self.assertNotEqual("${USER}", config.groups[0].servers[0].username)
+    self.assertNotEqual("${USER}", config.groups[0].servers[1].username)
+
+  def test_expand_hostname(self):
+    config_yaml = """version: 'installed-packages-diff/2'
+groups:
+  db:
+    servers:
+      - username: user1
+        hostname: ${USER}s_machine
+      - username: user2
+        hostname: ${USER}s_machine
+"""
+    config = load_config(io.StringIO(config_yaml))
+    self.assertNotEqual("${USER}s_machine", config.groups[0].servers[0].hostname)
+    self.assertNotEqual("${USER}s_machine", config.groups[0].servers[1].hostname)
+
   def test_full(self):
     config_yaml = """version: 'installed-packages-diff/2'
 groups:

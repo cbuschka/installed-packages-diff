@@ -1,7 +1,8 @@
 import logging
+import os
 
-from yaml import load
 import jsonschema
+from yaml import load
 
 try:
   from yaml import CLoader as Loader, CDumper as Dumper
@@ -76,11 +77,15 @@ CONFIG_SCHEMA = {
 }
 
 
+def _expand_value(value):
+  return os.path.expandvars(value) if value else value
+
+
 class Server(object):
   def __init__(self, raw, *, type_from_group=None):
-    self.hostname = raw["hostname"]
-    self.username = raw.get("username", None)
-    self.excludes = {e for e in raw.get("excludes", [])}
+    self.hostname = _expand_value(raw["hostname"])
+    self.username = _expand_value(raw.get("username", None))
+    self.excludes = {_expand_value(e) for e in raw.get("excludes", [])}
     self.type = raw.get("type", type_from_group)
 
 
