@@ -1,6 +1,8 @@
 import io
 import unittest
+
 import jsonschema
+
 from installed_packages_diff.config import load_config
 
 
@@ -29,13 +31,13 @@ class ConfigTest(unittest.TestCase):
 groups:
   db:
     servers:
-      - hostname: dbdev
+      - username: user
+        hostname: dbdev
       - hostname: dbdev
 """
-    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
-      load_config(io.StringIO(config_yaml))
-    self.assertEqual("'username' is a required property",
-                     ex_ctx.exception.message)
+    config = load_config(io.StringIO(config_yaml))
+    self.assertIsNotNone(config.groups[0].servers[0].username)
+    self.assertIsNone(config.groups[0].servers[1].username)
 
   def test_valid_group_type(self):
     config_yaml = """version: 'installed-packages-diff/2'

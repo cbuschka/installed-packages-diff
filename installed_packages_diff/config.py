@@ -65,7 +65,7 @@ CONFIG_SCHEMA = {
                      }},
       },
       "additionalProperties": False,
-      "required": ["hostname", "username"]
+      "required": ["hostname"]
     },
     "pkg-type": {
       "id": "#/definitions/pkg-type",
