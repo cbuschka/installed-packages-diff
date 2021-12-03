@@ -7,7 +7,7 @@ from .package import Package
 
 class PackageFetcher(object):
   LIST_PACKAGES_COMMAND = {
-    "rpm": "rpm -qa",
+    "rpm": "rpm --queryformat '%{NAME}\\t%{VERSION}\\n' -qa",
     "dpkg": "dpkg-query --show --showformat='${binary:Package}\\t${Version}\\n'"
   }
 
