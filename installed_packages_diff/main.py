@@ -37,7 +37,7 @@ def _parse_args():
 
 
 def main():
-  logging.basicConfig(stream=sys.stderr, encoding='utf-8',
+  logging.basicConfig(stream=sys.stderr,
                       format='%(asctime)s %(message)s',
                       level=logging.INFO)
 

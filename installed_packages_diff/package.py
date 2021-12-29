@@ -3,7 +3,7 @@ import re
 
 class Package(object):
   PKG_NAME_REGEX = {
-    "rpm": re.compile("^\s*(.+)-([^\-\s]+-[^\-\s]+)\s*$"),
+    "rpm": re.compile("^\s*(.+)\t([^\s]+)\s*$"),
     "dpkg": re.compile("^\s*(.+)\t([^\s]+)\s*$")
   }
 
