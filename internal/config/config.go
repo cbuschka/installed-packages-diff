@@ -1,9 +1,8 @@
 package config
 
 type ServerConfig struct {
-	Hostname string
-	Port     int
-	Username string
+	Url  string `yaml:"url"`
+	Type string `yaml:"type"`
 }
 
 type ServersConfig struct {
@@ -11,5 +10,6 @@ type ServersConfig struct {
 }
 
 type Config struct {
-	Groups map[string]ServersConfig
+	Version string                   `yaml:"version"`
+	Groups  map[string]ServersConfig `yaml:"groups"`
 }

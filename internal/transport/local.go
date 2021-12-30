@@ -1,13 +1,13 @@
-package server
+package transport
 
 import (
 	"os"
 	"os/exec"
 )
 
-type LocalChannel struct{}
+type LocalTransport struct{}
 
-func (local *LocalChannel) IsFile(path string) (bool, error) {
+func (local *LocalTransport) IsFile(path string) (bool, error) {
 	stat, err := os.Stat(path)
 	if os.IsNotExist(err) {
 		return false, nil
@@ -20,7 +20,7 @@ func (local *LocalChannel) IsFile(path string) (bool, error) {
 	return stat.Mode().IsRegular(), nil
 }
 
-func (local *LocalChannel) Run(command ...string) (string, string, error) {
+func (local *LocalTransport) ExecCommand(command ...string) (string, string, error) {
 
 	out, err := exec.Command(command[0], command[1:]...).Output()
 	if exiterr, ok := err.(*exec.ExitError); ok {

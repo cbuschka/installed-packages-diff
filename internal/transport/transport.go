@@ -1,4 +1,4 @@
-package server
+package transport
 
 import "fmt"
 
@@ -10,7 +10,7 @@ func (err *ExitError) Error() string {
 	return fmt.Sprintf("exit with code %d", err.ExitCode)
 }
 
-type Channel interface {
-	Run(command ...string) (string, string, error)
+type Transport interface {
+	ExecCommand(command ...string) (string, string, error)
 	IsFile(path string) (bool, error)
 }

@@ -1,14 +1,14 @@
 package diff
 
 import (
-	_package "github.com/cbuschka/pkgdiff/internal/package"
-	"github.com/cbuschka/pkgdiff/internal/server"
+	"github.com/cbuschka/go-pkgdiff/internal/model"
+	"github.com/cbuschka/go-pkgdiff/internal/transport"
 )
 
 type DiffEntry struct {
-	Package _package.Package
+	Package model.Package
 }
 
-func Diff(packageLists []*server.PackageList) error {
-
+func Diff(packageLists []transport.PackageList) error {
+	return nil
 }

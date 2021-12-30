@@ -2,13 +2,13 @@ package main
 
 import (
 	"fmt"
-	"github.com/cbuschka/pkgdiff/internal"
+	"github.com/cbuschka/go-pkgdiff/internal/command"
 	"os"
 )
 
 func main() {
 
-	err := internal.Run()
+	err := command.Run()
 	if err != nil {
 		fmt.Printf("Failed to run package diff: %v", err.Error())
 		os.Exit(1)

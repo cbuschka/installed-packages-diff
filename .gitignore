@@ -1,7 +1,4 @@
+/coverage.txt
 config*.y?ml
 *~
-*.pyc
-__pycache__/
 dist/
-build/
-*.egg-info/
