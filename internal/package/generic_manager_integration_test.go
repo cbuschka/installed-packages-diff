@@ -2,15 +2,21 @@ package _package
 
 import (
 	"github.com/cbuschka/go-pkgdiff/internal/model"
-	"github.com/cbuschka/go-pkgdiff/internal/transport"
+	transportPkg "github.com/cbuschka/go-pkgdiff/internal/transport"
 	"github.com/stretchr/testify/assert"
 	"testing"
 )
 
-func TestRunDnfLocally(t *testing.T) {
+func TestRunRpmWithDnfLocally(t *testing.T) {
 
-	localTransport := transport.LocalTransport{}
-	packages, err := rpmWithDnf.ListPackages(transport.Transport(&localTransport))
+	localTransport := transportPkg.Transport(&transportPkg.LocalTransport{})
+
+	available, err := rpmWithDnf.IsAvailable(localTransport)
+	if err != nil || !available {
+		return
+	}
+
+	packages, err := rpmWithDnf.ListPackages(localTransport)
 	if err != nil {
 		t.Fatal(err)
 		return
