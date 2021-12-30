@@ -11,7 +11,7 @@
 
 * GNU make
 * python >= 3.6
-* pipenv
+* virtualenv
 
 ## Usage
 
@@ -40,17 +40,15 @@ make tests
 ### Create a config config.yml
 
 ```yaml
-version: 'installed-packages-diff/2'
+version: 'installed-packages-diff/3'
 groups:
   web:
     type: rpm # or dpkg
     servers:
-      - username: root
-        hostname: web-dev
+      - url: ssh://root@web-dev
         excludes:
           - "missing"
-      - username: root
-        hostname: web-live
+      - url: ssh://root@web-live
 ```
 
 ### Run installed-packages-diff
