@@ -1,3 +1,4 @@
+from urllib.parse import urlparse
 import logging
 
 from yaml import load
@@ -17,7 +18,7 @@ CONFIG_SCHEMA = {
     "version": {
       "type": "string",
       "enum": [
-        "installed-packages-diff/2"
+        "installed-packages-diff/3"
       ]
     },
     "groups": {
@@ -57,15 +58,14 @@ CONFIG_SCHEMA = {
         "type": {
           "$ref": "#/definitions/pkg-type"
         },
-        "username": {"type": "string"},
-        "hostname": {"type": "string"},
+        "url": {"type": "string"},
         "excludes": {"type": "array",
                      "items": {
                        "type": "string"
                      }},
       },
       "additionalProperties": False,
-      "required": ["hostname", "username"]
+      "required": ["url"]
     },
     "pkg-type": {
       "id": "#/definitions/pkg-type",
@@ -78,8 +78,7 @@ CONFIG_SCHEMA = {
 
 class Server(object):
   def __init__(self, raw, *, type_from_group=None):
-    self.hostname = raw["hostname"]
-    self.username = raw.get("username", None)
+    self.url = urlparse(raw["url"])
     self.excludes = {e for e in raw.get("excludes", [])}
     self.type = raw.get("type", type_from_group)
 

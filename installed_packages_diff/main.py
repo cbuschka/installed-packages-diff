@@ -10,11 +10,8 @@ import logging
 
 def diff_server(serverA, serverB):
   pkgFetcher = PackageFetcher()
-  devPkgs = pkgFetcher.get_packages(serverA.hostname, username=serverA.username,
-                                    type=serverA.type)
-  prodPkgs = pkgFetcher.get_packages(serverB.hostname,
-                                     username=serverB.username,
-                                     type=serverB.type)
+  devPkgs = pkgFetcher.get_packages(serverA, type=serverA.type)
+  prodPkgs = pkgFetcher.get_packages(serverB, type=serverB.type)
   installed_packages_diff = create_diff(devPkgs, prodPkgs,
                                         aExcludes=serverA.excludes,
                                         bExcludes=serverB.excludes,

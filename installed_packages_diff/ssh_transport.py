@@ -4,9 +4,9 @@ from .transport import Transport
 import paramiko
 
 class SshTransport(Transport):
-  def __init__(self, hostname, *, username=None):
-    self.hostname = hostname
-    self.username = username
+  def __init__(self, server):
+    self.hostname = server.url.hostname
+    self.username = server.url.username
 
   def exec_command(self, command):
     logging.info(f"Fetching package from {self.username}@{self.hostname}...")

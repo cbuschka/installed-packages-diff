@@ -16,37 +16,22 @@ class ConfigTest(unittest.TestCase):
     config_yaml = """version: 'invalid'"""
     with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
       load_config(io.StringIO(config_yaml))
-    self.assertEqual("'invalid' is not one of ['installed-packages-diff/2']",
+    self.assertEqual("'invalid' is not one of ['installed-packages-diff/3']",
                      ex_ctx.exception.message)
 
   def test_minimal_config(self):
-    config_yaml = """version: 'installed-packages-diff/2'"""
+    config_yaml = """version: 'installed-packages-diff/3'"""
     config = load_config(io.StringIO(config_yaml))
     self.assertEqual(0, len(config.groups))
 
-  def test_missing_username(self):
-    config_yaml = """version: 'installed-packages-diff/2'
-groups:
-  db:
-    servers:
-      - hostname: dbdev
-      - hostname: dbdev
-"""
-    with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
-      load_config(io.StringIO(config_yaml))
-    self.assertEqual("'username' is a required property",
-                     ex_ctx.exception.message)
-
   def test_valid_group_type(self):
-    config_yaml = """version: 'installed-packages-diff/2'
+    config_yaml = """version: 'installed-packages-diff/3'
 groups:
   group:
     type: rpm
     servers:
-      - hostname: host
-        username: root
-      - hostname: host
-        username: root
+      - url: ssh://root@host
+      - url: ssh://root@host
         type: dpkg
 """
     config = load_config(io.StringIO(config_yaml))
@@ -55,7 +40,7 @@ groups:
     self.assertEqual("dpkg", config.groups[0].servers[1].type)
 
   def test_single_server(self):
-    config_yaml = """version: 'installed-packages-diff/2'
+    config_yaml = """version: 'installed-packages-diff/3'
 groups:
   group:
     servers:
@@ -67,43 +52,39 @@ groups:
     self.assertEqual("[{'hostname': 'host', 'username': 'root'}] is too short",
                      ex_ctx.exception.message)
 
-  def test_missing_hostname(self):
-    config_yaml = """version: 'installed-packages-diff/2'
+  def test_missing_url(self):
+    config_yaml = """version: 'installed-packages-diff/3'
 groups:
   db:
     servers:
-      - username: root
-      - username: root
+      - excludes: []
+      - excludes: []
 """
     with self.assertRaises(jsonschema.exceptions.ValidationError) as ex_ctx:
       load_config(io.StringIO(config_yaml))
-    self.assertEqual("'hostname' is a required property",
+    self.assertEqual("'url' is a required property",
                      ex_ctx.exception.message)
 
   def test_full(self):
-    config_yaml = """version: 'installed-packages-diff/2'
+    config_yaml = """version: 'installed-packages-diff/3'
 groups:
   db:
     servers:
-      - username: root
-        hostname: dbdev
+      - url: ssh://root@dbdev
         excludes:
           - "missing"
-      - username: root
-        hostname: dblive
+      - url: ssh://root@dblive
   web:
     servers:
-      - username: root
-        hostname: webdev
+      - url: ssh://root@webdev
         excludes:
           - "missing"
-      - username: root
-        hostname: weblive
+      - url: ssh://root@weblive
 """
     config = load_config(io.StringIO(config_yaml))
     self.assertEqual([g.name for g in config.groups], ["db", "web"])
     self.assertEqual(
-      [(s.hostname, s.username) for s in config.groups[1].servers],
+      [(s.url.hostname, s.url.username) for s in config.groups[1].servers],
       [("webdev", "root"), ("weblive", "root")])
     self.assertEqual(config.groups[1].servers[0].excludes, {"missing"})
     self.assertEqual(config.groups[1].servers[1].excludes, set())

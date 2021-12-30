@@ -1,6 +1,4 @@
 import logging
-
-import paramiko
 import subprocess
 
 from .transport import Transport

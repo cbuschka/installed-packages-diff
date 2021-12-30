@@ -1,19 +1,16 @@
-version: 'installed-packages-diff/2'
+version: 'installed-packages-diff/3'
 groups:
   db:
     type: rpm
     servers:
-      - username: root
-        hostname: dbdev
+      - url: ssh://root@dbdev
         excludes:
           - "missing"
-      - username: root
-        hostname: dblive
+      - url: ssh://root@dblive
+
   web:
     servers:
-      - username: root
-        hostname: webdev
+      - url: ssh://root@webdev
         excludes:
           - "missing"
-      - username: root
-        hostname: weblive
+      - url: ssh://root@weblive
