@@ -16,7 +16,7 @@ def diff_server(serverA, serverB):
                                         aExcludes=serverA.excludes,
                                         bExcludes=serverB.excludes,
                                         includeEqual=False)
-  print_diff(serverA.hostname, serverB.hostname, installed_packages_diff)
+  print_diff(serverA.url.hostname, serverB.url.hostname, installed_packages_diff)
 
 
 def _parse_args():

@@ -1,10 +1,14 @@
-def _filter_diff(diffAB: list, aExcludes, bExcludes, includeEqual):
+from typing import List, Callable
+import re
+
+
+def _filter_diff(diffAB: list, aExcludes: List[Callable], bExcludes: List[Callable], includeEqual):
   filtered = []
   for (packageName, versionA, versionB) in diffAB:
-    excluded = packageName in aExcludes \
-               or packageName in bExcludes \
-               or versionA in aExcludes \
-               or versionB in bExcludes
+    excluded = [packageName for exclude in aExcludes if exclude(packageName)] \
+               or [packageName for exclude in bExcludes if exclude(packageName)] \
+               or [versionA for exclude in aExcludes if exclude(versionA)] \
+               or [versionB for exclude in bExcludes if exclude(versionB)]
     if not excluded and (versionA != versionB or includeEqual):
       filtered.append((packageName, versionA, versionB))
 
@@ -20,10 +24,21 @@ def _to_package_map(packageList):
   return packageMap
 
 
+def _to_matcher_list(list: List[str]) -> List[Callable]:
+  matcher_list = []
+  for s in list:
+    if s.startswith("/") and s.endswith("/"):
+      regex = re.compile(s)
+      matcher_list.append(lambda x: regex.match(x))
+    else:
+      matcher_list.append(lambda x: x and x.startswith(s))
+  return matcher_list
+
+
 def create_diff(listA, listB, *, aExcludes=None, bExcludes=None,
                 includeEqual=False):
-  aExcludes = aExcludes or []
-  bExcludes = bExcludes or []
+  aExcludes = _to_matcher_list(aExcludes or [])
+  bExcludes = _to_matcher_list(bExcludes or [])
 
   mapA = _to_package_map(listA)
   mapB = _to_package_map(listB)

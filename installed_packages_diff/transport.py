@@ -1,8 +1,11 @@
+from typing import List
+
+
 class Transport(object):
   def __enter__(self):
     return self
 
-  def exec_command(self, command):
+  def exec_command(self, command: List):
     raise NotImplementedError()
 
   def close(self):

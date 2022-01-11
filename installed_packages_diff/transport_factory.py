@@ -5,6 +5,6 @@ from installed_packages_diff.ssh_transport import SshTransport
 class TransportFactory(object):
   def connect(self, server):
     if server.url.scheme == "ssh":
-      return SshTransport()
+      return SshTransport(server)
     else:
       return LocalTransport()

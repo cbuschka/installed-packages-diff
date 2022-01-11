@@ -1,3 +1,4 @@
+from typing import List
 import logging
 import subprocess
 
@@ -5,7 +6,7 @@ from .transport import Transport
 
 
 class LocalTransport(Transport):
-  def exec_command(self, command) -> [str, str, int]:
+  def exec_command(self, command: List) -> [str, str, int]:
     logging.info(f"Fetching packages locally...")
 
     proc = subprocess.Popen(command, stdout=subprocess.PIPE, stderr=subprocess.PIPE, stdin=subprocess.PIPE)
